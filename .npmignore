@@ -1,0 +1,9 @@
+src/test-local.ts
+tests/
+coverage/
+vitest.config.ts
+scripts/
+eslint.config.js
+.prettierrc
+package-lock.json
+.DS_Store

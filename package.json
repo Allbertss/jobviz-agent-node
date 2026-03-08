@@ -1,0 +1,97 @@
+{
+  "name": "jobviz-agent",
+  "version": "0.1.0",
+  "description": "Lightweight agent SDK for monitoring BullMQ, bee-queue, and Agenda.js jobs with Jobviz",
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "default": "./dist/index.js"
+    }
+  },
+  "packageManager": "npm@10.9.2",
+  "sideEffects": false,
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE",
+    "CHANGELOG.md"
+  ],
+  "scripts": {
+    "build": "node scripts/sync-version.js && tsc",
+    "dev": "tsx watch src/test-local.ts",
+    "lint": "eslint . && tsc --noEmit",
+    "format": "prettier --write \"src/**/*.ts\"",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "prepublishOnly": "npm run lint && npm run test && npm run build"
+  },
+  "keywords": [
+    "bullmq",
+    "bee-queue",
+    "agenda",
+    "queue",
+    "jobs",
+    "monitoring",
+    "observability",
+    "jobviz"
+  ],
+  "author": "Allbertss",
+  "license": "MIT",
+  "engines": {
+    "node": ">=18",
+    "npm": ">=8"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Allbertss/jobviz.git",
+    "directory": "agent"
+  },
+  "homepage": "https://jobviz.dev",
+  "funding": {
+    "type": "github",
+    "url": "https://github.com/sponsors/Allbertss"
+  },
+  "bugs": {
+    "url": "https://github.com/Allbertss/jobviz/issues"
+  },
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/",
+    "access": "public",
+    "provenance": true
+  },
+  "peerDependencies": {
+    "bullmq": "^5.0.0",
+    "bee-queue": "^1.7.0",
+    "agenda": "^5.0.0"
+  },
+  "peerDependenciesMeta": {
+    "bullmq": {
+      "optional": true
+    },
+    "bee-queue": {
+      "optional": true
+    },
+    "agenda": {
+      "optional": true
+    }
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "@types/node": "^22.0.0",
+"@vitest/coverage-v8": "^3.0.0",
+    "bee-queue": "^1.7.1",
+    "bullmq": "^5.0.0",
+    "eslint": "^10.0.3",
+    "eslint-config-prettier": "^10.1.8",
+    "prettier": "^3.8.1",
+    "tsx": "^4.0.0",
+    "typescript": "^5.0.0",
+    "typescript-eslint": "^8.56.1",
+    "vitest": "^3.0.0"
+  }
+}
