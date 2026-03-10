@@ -268,6 +268,15 @@ process.on('SIGINT', shutdown);
 - ESM only (`import` syntax) — CommonJS `require()` is not supported
 - One of: BullMQ 5+, bee-queue 1.7+, or Agenda 5+
 
+## Documentation
+
+Full documentation is available at [jobviz.dev/docs](https://jobviz.dev/docs).
+
+- [Getting Started](https://jobviz.dev/docs/getting-started)
+- [Node.js SDK Reference](https://jobviz.dev/docs/node-sdk)
+- [Custom Integration](https://jobviz.dev/docs/custom-integration)
+- [Examples](https://jobviz.dev/docs/examples)
+
 ## License
 
 [MIT](LICENSE)
