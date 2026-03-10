@@ -1,4 +1,5 @@
 import type { JobEvent } from './buffer.js';
+import type { TransportResponse } from './transport.js';
 
 interface ErrorEntry {
   at: number;
@@ -29,6 +30,17 @@ export class DebugLogger {
     this.eventsDropped += count;
     this.pushError(err.message);
     console.error(`[jobviz:debug] dropped ${count} events: ${err.message}`);
+  }
+
+  logResponse(body: TransportResponse): void {
+    console.log(
+      `[jobviz:debug] backend response: accepted=${body.accepted} rejected=${body.rejected}`,
+    );
+    if (body.rejected > 0) {
+      for (const e of body.errors ?? []) {
+        console.warn(`[jobviz:debug]   event[${e.index}]: ${e.errors.join(', ')}`);
+      }
+    }
   }
 
   logConnectionIssue(message: string): void {

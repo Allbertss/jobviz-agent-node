@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.1.1 (2026-03-10)
+
+### Bug Fixes
+
+- **transport**: Add `Accept: application/json` header to prevent HTML responses from backend
+- **jobviz.log()**: Support Agenda.js job objects (fallback to `job.attrs._id` / `job.attrs.name`)
+- **jobviz.log()**: Use `'default'` queue and `'unknown'` id/name fallbacks instead of empty strings that fail backend validation
+- **BullMQ provider**: Use `'unknown'` fallback for job names on cache misses instead of empty strings
+
 ## 0.1.0 (2026-03-08)
 
 Initial release.

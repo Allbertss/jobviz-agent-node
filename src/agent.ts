@@ -219,6 +219,9 @@ export class JobvizAgent {
       endpoint: config.endpoint ?? 'https://app.jobviz.dev',
       apiKey: config.apiKey,
       onError,
+      onResponse: this.debugLogger
+        ? (body) => this.debugLogger!.logResponse(body)
+        : undefined,
       agentVersion: AGENT_VERSION,
       agentMeta: this.sanitizedConfig,
     });
@@ -285,14 +288,19 @@ export class JobvizAgent {
    * Sends a "progress" event with the log message in the data payload.
    */
   log(
-    job: { id?: string; name?: string; queueName?: string },
+    job: {
+      id?: string;
+      name?: string;
+      queueName?: string;
+      attrs?: { _id?: unknown; name?: string };
+    },
     message: string,
     meta?: Record<string, unknown>,
   ): void {
     this.buffer.push({
-      jobId: job.id ?? '',
-      jobName: job.name ?? '',
-      queue: job.queueName ?? '',
+      jobId: job.id ?? (job.attrs?._id != null ? String(job.attrs._id) : 'unknown'),
+      jobName: job.name ?? job.attrs?.name ?? 'unknown',
+      queue: job.queueName ?? 'default',
       event: 'progress',
       timestamp: Date.now(),
       data: {

@@ -459,7 +459,7 @@ describe('BullMQProvider', () => {
       (e) => e.event === 'stalled' && e.jobId === 'j1',
     );
     expect(stalledEvent).toBeDefined();
-    expect(stalledEvent!.jobName).toBe(''); // cache was swept
+    expect(stalledEvent!.jobName).toBe('unknown'); // cache was swept
 
     await provider.disconnect();
   });
@@ -481,7 +481,7 @@ describe('BullMQProvider', () => {
     // Should still emit a minimal event
     expect(received).toHaveLength(1);
     expect(received[0].event).toBe('waiting');
-    expect(received[0].jobName).toBe('');
+    expect(received[0].jobName).toBe('unknown');
 
     await provider.disconnect();
   });
@@ -612,7 +612,7 @@ describe('BullMQProvider', () => {
     await vi.advanceTimersByTimeAsync(0);
 
     expect(received).toHaveLength(1);
-    expect(received[0].jobName).toBe('');
+    expect(received[0].jobName).toBe('unknown');
 
     await provider.disconnect();
   });

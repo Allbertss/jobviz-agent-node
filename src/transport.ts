@@ -1,9 +1,16 @@
 import type { JobEvent } from './buffer.js';
 
+export interface TransportResponse {
+  accepted: number;
+  rejected: number;
+  errors?: Array<{ index: number; errors: string[] }>;
+}
+
 export interface TransportConfig {
   endpoint: string;
   apiKey: string;
   onError?: (err: Error, dropped: number) => void;
+  onResponse?: (body: TransportResponse) => void;
   agentVersion?: string;
   agentMeta?: Record<string, unknown>;
 }
@@ -29,6 +36,7 @@ export class HttpTransport {
     }
     const headers: Record<string, string> = {
       'Content-Type': 'application/json',
+      Accept: 'application/json',
       Authorization: `Bearer ${this.config.apiKey}`,
     };
 
@@ -51,7 +59,17 @@ export class HttpTransport {
           signal: AbortSignal.timeout(10_000),
         });
 
-        if (res.ok) return;
+        if (res.ok) {
+          if (this.config.onResponse) {
+            try {
+              const resBody = (await res.json()) as TransportResponse;
+              this.config.onResponse(resBody);
+            } catch {
+              // Response was not JSON — ignore (e.g. empty 204 or non-JSON 200)
+            }
+          }
+          return;
+        }
 
         // 429 = rate limited, retryable — respect Retry-After header if present
         if (res.status === 429) {

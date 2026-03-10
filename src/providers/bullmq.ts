@@ -124,7 +124,7 @@ export class BullMQProvider implements QueueProvider {
     queueEvents.on('waiting', ({ jobId }: { jobId: string }) => {
       void Job.fromId(queue, jobId)
         .then((job: Job | undefined) => {
-          const name = job?.name ?? '';
+          const name = job?.name || 'unknown';
           const traceId = this.extractTraceId(job);
           const parent = this.extractParent(job);
           const input = this.getInput(job);
@@ -152,7 +152,7 @@ export class BullMQProvider implements QueueProvider {
         .catch(() => {
           // Redis lookup failed — emit a minimal event so the job isn't invisible
           this.push(
-            this.makeEvent(jobId, '', queueName, 'waiting'),
+            this.makeEvent(jobId, 'unknown', queueName, 'waiting'),
           );
         });
     });
@@ -178,7 +178,7 @@ export class BullMQProvider implements QueueProvider {
         // Cache miss (e.g. agent started after job was already waiting) — fallback to Redis
         void Job.fromId(queue, jobId)
           .then((job: Job | undefined) => {
-            const name = job?.name ?? '';
+            const name = job?.name || 'unknown';
             const traceId = this.extractTraceId(job);
             const parent = this.extractParent(job);
             const input = this.getInput(job);
@@ -205,7 +205,7 @@ export class BullMQProvider implements QueueProvider {
           })
           .catch(() => {
             this.push(
-              this.makeEvent(jobId, '', queueName, 'active'),
+              this.makeEvent(jobId, 'unknown', queueName, 'active'),
             );
           });
       }
@@ -218,7 +218,7 @@ export class BullMQProvider implements QueueProvider {
         this.push(
           this.makeEvent(
             jobId,
-            cached?.name ?? '',
+            cached?.name || 'unknown',
             queueName,
             'completed',
             {
@@ -245,7 +245,7 @@ export class BullMQProvider implements QueueProvider {
               this.push(
                 this.makeEvent(
                   jobId,
-                  cached?.name ?? '',
+                  cached?.name || 'unknown',
                   queueName,
                   'failed',
                   {
@@ -263,7 +263,7 @@ export class BullMQProvider implements QueueProvider {
               this.push(
                 this.makeEvent(
                   jobId,
-                  cached?.name ?? '',
+                  cached?.name || 'unknown',
                   queueName,
                   'failed',
                   { failedReason },
@@ -279,7 +279,7 @@ export class BullMQProvider implements QueueProvider {
           this.push(
             this.makeEvent(
               jobId,
-              cached?.name ?? '',
+              cached?.name || 'unknown',
               queueName,
               'failed',
               { failedReason },
@@ -299,7 +299,7 @@ export class BullMQProvider implements QueueProvider {
         this.push(
           this.makeEvent(
             jobId,
-            cached?.name ?? '',
+            cached?.name || 'unknown',
             queueName,
             'delayed',
             { delay },
@@ -315,7 +315,7 @@ export class BullMQProvider implements QueueProvider {
       this.push(
         this.makeEvent(
           jobId,
-          cached?.name ?? '',
+          cached?.name || 'unknown',
           queueName,
           'stalled',
           undefined,
@@ -332,7 +332,7 @@ export class BullMQProvider implements QueueProvider {
         this.push(
           this.makeEvent(
             jobId,
-            cached?.name ?? '',
+            cached?.name || 'unknown',
             queueName,
             'progress',
             {

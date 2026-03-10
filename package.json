@@ -1,6 +1,6 @@
 {
   "name": "jobviz-agent",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Lightweight agent SDK for monitoring BullMQ, bee-queue, and Agenda.js jobs with Jobviz",
   "type": "module",
   "main": "dist/index.js",
